@@ -1,0 +1,149 @@
+/* GOVERNMENT SYSTEM STYLE – SAME COLORS & SIZE, DIFFERENT IDENTITY */
+
+:root{
+  --primary:#4361ee;            /* kept */
+  --primary-dark:#3a56d4;
+  --primary-light:#eef2ff;
+  --success:#4cc9f0;
+  --danger:#f72585;
+  --warning:#f8961e;
+  --light:#f8f9fa;
+  --dark:#212529;
+  --white:#ffffff;
+
+  --border-radius:4px;          /* sharper like gov systems */
+  --box-shadow:none;            /* gov systems usually flat */
+  --font-family:'Inter',Arial,sans-serif;
+}
+
+/* GLOBAL – PLAIN & SERIOUS */
+body{
+  background:#f3f4f6;
+  font-size:14px;
+}
+
+/* HEADER – OFFICIAL BAR */
+header{
+  background:var(--primary);
+  color:var(--white);
+  border-bottom:4px solid #1e40af;
+}
+
+.logo{
+  color:var(--white);
+  font-size:1.25rem;
+}
+
+.logo i{color:var(--white)}
+
+/* NAV – TEXT BUTTONS */
+.nav-links{
+  gap:0;
+}
+
+.nav-link{
+  color:#e5edff;
+  border-radius:0;
+  padding:10px 14px;
+}
+
+.nav-link:hover{
+  background:rgba(255,255,255,.12);
+}
+
+.nav-link.active{
+  background:#1e40af;
+  color:var(--white);
+}
+
+/* SECTION HEADERS */
+h2{
+  font-size:1.2rem;
+  border-bottom:2px solid #c7d2fe;
+  padding-bottom:6px;
+}
+
+/* CARD – DOCUMENT PANEL */
+.card{
+  background:var(--white);
+  border:1px solid #d1d5db;
+  border-radius:4px;
+  padding:1.5rem;
+}
+
+/* TABLE – OFFICIAL RECORD STYLE */
+table{
+  border:1px solid #9ca3af;
+  border-collapse:collapse;
+}
+
+th{
+  background:#e5edff;
+  color:#1e3a8a;
+  font-size:.85rem;
+  text-transform:uppercase;
+  border:1px solid #9ca3af;
+}
+
+td{
+  border:1px solid #d1d5db;
+  font-size:.9rem;
+}
+
+tr:nth-child(even){
+  background:#f9fafb;
+}
+
+/* BUTTONS – FORMAL */
+.btn{
+  border-radius:4px;
+  font-size:.85rem;
+  padding:8px 14px;
+}
+
+.btn-primary{background:var(--primary)}
+.btn-warning{background:var(--warning)}
+.btn-danger{background:var(--danger)}
+
+/* FORM – PAPER FORM STYLE */
+label{
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.form-control{
+  border-radius:2px;
+  border:1px solid #9ca3af;
+  padding:8px;
+}
+
+.form-control:focus{
+  outline:2px solid #c7d2fe;
+  box-shadow:none;
+}
+
+/* BADGES – STATUS TAGS */
+.badge{
+  border-radius:2px;
+  font-size:.75rem;
+  padding:4px 6px;
+}
+
+/* ALERT – NOTICE BOX */
+.alert{
+  border-radius:0;
+  border-left:6px solid var(--primary);
+  background:#f8fafc;
+}
+
+/* FOOTER – OFFICIAL FOOTNOTE */
+footer{
+  background:#e5edff;
+  border-top:2px solid #c7d2fe;
+  font-size:.8rem;
+}
+
+.api-status{
+  font-weight:600;
+}

@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Pro - All Buttons Working</title>
+    <style>
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: #121826;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .app {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* HEADER */
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            background: white;
+            color: #667eea;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .logo-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .logo-text p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        /* SIDEBAR */
+        .app-layout {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: #a0a0a0;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .nav-btn.active {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border-left: 4px solid #667eea;
+        }
+        
+        .nav-btn i {
+            font-size: 18px;
+            width: 24px;
+        }
+        
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 600px;
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        /* SECTION HEADER */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .section-title i {
+            color: #667eea;
+        }
+        
+        /* ACTION BUTTONS */
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        
+        /* TABLE */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .data-table th {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            color: #667eea;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-table td {
+            padding: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #d1d1d1;
+        }
+        
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* STATUS BADGES */
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .badge-success {
+            background: rgba(0, 176, 155, 0.2);
+            color: #00b09b;
+            border: 1px solid rgba(0, 176, 155, 0.3);
+        }
+        
+        .badge-warning {
+            background: rgba(247, 151, 30, 0.2);
+            color: #f7971e;
+            border: 1px solid rgba(247, 151, 30, 0.3);
+        }
+        
+        .badge-danger {
+            background: rgba(255, 65, 108, 0.2);
+            color: #ff416c;
+            border: 1px solid rgba(255, 65, 108, 0.3);
+        }
+        
+        .badge-info {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        /* FORM */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #d1d1d1;
+            font-size: 15px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        /* ALERTS */
+        .alert-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            max-width: 350px;
+        }
+        
+        .alert {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .alert-success {
+            border-left-color: #00b09b;
+        }
+        
+        .alert-error {
+            border-left-color: #ff416c;
+        }
+        
+        .alert-info {
+            border-left-color: #667eea;
+        }
+        
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a0a0a0;
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        /* FOOTER */
+        .app-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #a0a0a0;
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .app-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Inventory Management</h1>
+                </div>
+            </div>
+            <div class="system-status">
+                <span class="status-badge badge-success">
+                    <i class="fas fa-circle"></i> System Online
+                </span>
+            </div>
+        </header>
+        
+        <!-- MAIN LAYOUT -->
+        <div class="app-layout">
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <nav class="nav">
+                    <button class="nav-btn active" onclick="showSection('overview')">
+                        <i class="fas fa-chart-pie"></i> Overview
+                    </button>
+                    <button class="nav-btn" onclick="showSection('products')">
+                        <i class="fas fa-box"></i> Products
+                    </button>
+                    <button class="nav-btn" onclick="showSection('suppliers')">
+                        <i class="fas fa-truck"></i> Suppliers
+                    </button>
+                    <button class="nav-btn" onclick="showSection('orders')">
+                        <i class="fas fa-clipboard-list"></i> Orders
+                    </button>
+                    <button class="nav-btn" onclick="showSection('add')">
+                        <i class="fas fa-plus-circle"></i> Add New
+                    </button>
+                    <button class="nav-btn" onclick="showSection('reports')">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </button>
+                    <button class="nav-btn" onclick="showSection('settings')">
+                        <i class="fas fa-cog"></i> Settings
+                    </button>
+                </nav>
+            </aside>
+            
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <!-- ALERTS -->
+                <div id="alertContainer" class="alert-container"></div>
+                
+                <!-- OVERVIEW SECTION -->
+                <section id="overview" class="content-section active">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-chart-pie"></i> Dashboard Overview
+                        </div>
+                        <button class="action-btn btn-primary" onclick="refreshAll()">
+                            <i class="fas fa-sync-alt"></i> Refresh All
+                        </button>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-card" style="flex: 1;">
+                            <h3 style="margin-bottom: 15px; color: #667eea;">📦 Products</h3>
+                            <p style="font-size: 14px; color: #a0a0a0; margin-bottom: 15px;">Manage your product inventory</p>
+                            <button class="action-btn btn-primary" onclick="showSection('products')">
+                                <i class="fas fa-eye"></i> View Products
+                            </button>
+                        </div>
+                        
+                        <div class="form-card" style="flex: 1;">
+                            <h3 style="margin-bottom: 15px; color: #00b09b;">🚚 Suppliers</h3>
+                            <p style="font-size: 14px; color: #a0a0a0; margin-bottom: 15px;">Manage supplier information</p>
+                            <button class="action-btn btn-success" onclick="showSection('suppliers')">
+                                <i class="fas fa-eye"></i> View Suppliers
+                            </button>
+                        </div>
+                        
+                        <div class="form-card" style="flex: 1;">
+                            <h3 style="margin-bottom: 15px; color: #f7971e;">📋 Orders</h3>
+                            <p style="font-size: 14px; color: #a0a0a0; margin-bottom: 15px;">Manage purchase orders</p>
+                            <button class="action-btn btn-warning" onclick="showSection('orders')">
+                                <i class="fas fa-eye"></i> View Orders
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- PRODUCTS SECTION -->
+                <section id="products" class="content-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-box"></i> Product Inventory
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="action-btn btn-primary" onclick="loadProducts()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                            <button class="action-btn btn-success" onclick="showAddForm('product')">
+                                <i class="fas fa-plus"></i> Add Product
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTable">
+                            <!-- Products will load here -->
+                        </tbody>
+                    </table>
+                    
+                    <div id="productsEmpty" class="empty-state" style="display: none;">
+                        <i class="fas fa-box-open"></i>
+                        <h3>No Products Found</h3>
+                        <p>Start by adding your first product</p>
+                        <button class="action-btn btn-success mt-3" onclick="showAddForm('product')">
+                            <i class="fas fa-plus"></i> Add First Product
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- SUPPLIERS SECTION -->
+                <section id="suppliers" class="content-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-truck"></i> Suppliers
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="action-btn btn-primary" onclick="loadSuppliers()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                            <button class="action-btn btn-success" onclick="showAddForm('supplier')">
+                                <i class="fas fa-plus"></i> Add Supplier
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                                <th>Products</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suppliersTable">
+                            <!-- Suppliers will load here -->
+                        </tbody>
+                    </table>
+                    
+                    <div id="suppliersEmpty" class="empty-state" style="display: none;">
+                        <i class="fas fa-truck-loading"></i>
+                        <h3>No Suppliers Found</h3>
+                        <p>Add your first supplier to get started</p>
+                        <button class="action-btn btn-success mt-3" onclick="showAddForm('supplier')">
+                            <i class="fas fa-plus"></i> Add First Supplier
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- ORDERS SECTION -->
+                <section id="orders" class="content-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-clipboard-list"></i> Orders
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="action-btn btn-primary" onclick="loadOrders()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                            <button class="action-btn btn-success" onclick="showAddForm('order')">
+                                <i class="fas fa-plus"></i> New Order
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Supplier</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable">
+                            <!-- Orders will load here -->
+                        </tbody>
+                    </table>
+                    
+                    <div id="ordersEmpty" class="empty-state" style="display: none;">
+                        <i class="fas fa-clipboard"></i>
+                        <h3>No Orders Found</h3>
+                        <p>Create your first order to get started</p>
+                        <button class="action-btn btn-success mt-3" onclick="showAddForm('order')">
+                            <i class="fas fa-plus"></i> Create First Order
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- ADD FORM SECTION -->
+                <section id="add" class="content-section">
+                    <div class="section-header">
+                        <div class="section-title" id="formTitle">
+                            <i class="fas fa-plus-circle"></i> Add New Product
+                        </div>
+                        <button class="action-btn btn-outline" onclick="cancelForm()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                    </div>
+                    
+                    <div class="form-container">
+                        <div class="form-card">
+                            <div id="formContainer">
+                                <!-- Form will be dynamically loaded here -->
+                                <div id="productForm">
+                                    <div class="form-group">
+                                        <label class="form-label">Product SKU *</label>
+                                        <input type="text" id="productSku" class="form-input" placeholder="PROD-001" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Product Name *</label>
+                                        <input type="text" id="productName" class="form-input" placeholder="Enter product name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Category</label>
+                                        <select id="productCategory" class="form-input">
+                                            <option value="">Select Category</option>
+                                            <option value="electronics">Electronics</option>
+                                            <option value="office">Office Supplies</option>
+                                            <option value="furniture">Furniture</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label">Price ($) *</label>
+                                            <input type="number" id="productPrice" class="form-input" placeholder="0.00" step="0.01" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Stock *</label>
+                                            <input type="number" id="productStock" class="form-input" placeholder="0" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                                <button class="action-btn btn-success" style="flex: 1;" onclick="saveItem()">
+                                    <i class="fas fa-check"></i>
+                                    <span id="submitText">Add Product</span>
+                                </button>
+                                <button class="action-btn" onclick="resetForm()" style="background: rgba(255,255,255,0.1); color: white;">
+                                    <i class="fas fa-redo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- REPORTS SECTION -->
+                <section id="reports" class="content-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-chart-bar"></i> Reports
+                        </div>
+                    </div>
+                    <div class="form-card">
+                        <div style="text-align: center; padding: 40px 20px;">
+                            <i class="fas fa-chart-line" style="font-size: 64px; color: #667eea; margin-bottom: 20px;"></i>
+                            <h3 style="margin-bottom: 10px;">Reports Coming Soon</h3>
+                            <p style="color: #a0a0a0;">Advanced reporting features will be available in the next update</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- SETTINGS SECTION -->
+                <section id="settings" class="content-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-cog"></i> Settings
+                        </div>
+                    </div>
+                    <div class="form-card">
+                        <div style="text-align: center; padding: 40px 20px;">
+                            <i class="fas fa-sliders-h" style="font-size: 64px; color: #667eea; margin-bottom: 20px;"></i>
+                            <h3 style="margin-bottom: 10px;">System Settings</h3>
+                            <p style="color: #a0a0a0;">Configuration options will be available here</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>Inventory Pro &copy; 2023 | Ready For Inventory Management ✅</p>
+        </footer>
+    </div>
+
+    <script>
+        // ========== DATA STORAGE ==========
+        let inventory = {
+            products: [
+                { id: 1, sku: "LAP-001", name: "Gaming Laptop", category: "electronics", price: 1299.99, stock: 15, status: "in-stock" },
+                { id: 2, sku: "MOU-001", name: "Wireless Mouse", category: "electronics", price: 29.99, stock: 50, status: "in-stock" },
+                { id: 3, sku: "KEY-001", name: "Mechanical Keyboard", category: "electronics", price: 89.99, stock: 25, status: "low-stock" },
+                { id: 4, sku: "DESK-001", name: "Office Desk", category: "furniture", price: 299.99, stock: 5, status: "in-stock" }
+            ],
+            suppliers: [
+                { id: 1, name: "TechGear Inc.", contact: "John Smith", email: "john@techgear.com", products: 3, status: "active" },
+                { id: 2, name: "Office Supplies Co.", contact: "Sarah Johnson", email: "sarah@officeco.com", products: 1, status: "active" },
+                { id: 3, name: "Global Electronics", contact: "Mike Chen", email: "mike@globalelec.com", products: 2, status: "active" }
+            ],
+            orders: [
+                { id: 1, number: "ORD-2023-001", supplierId: 1, date: "2023-10-15", items: 3, total: 2699.97, status: "completed" },
+                { id: 2, number: "ORD-2023-002", supplierId: 2, date: "2023-10-20", items: 1, total: 299.99, status: "processing" },
+                { id: 3, number: "ORD-2023-003", supplierId: 3, date: "2023-10-25", items: 2, total: 119.98, status: "pending" }
+            ]
+        };
+        
+        // ========== CURRENT STATE ==========
+        let currentFormType = 'product';
+        let isEditing = false;
+        let editingId = null;
+        
+        // ========== UI FUNCTIONS ==========
+        
+        // SHOW SECTION
+        function showSection(sectionId) {
+            console.log('Showing section:', sectionId);
+            
+            // Update active nav button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.nav-btn[onclick*="${sectionId}"]`).classList.add('active');
+            
+            // Update active content
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Load data if needed
+            if (sectionId === 'products') loadProducts();
+            else if (sectionId === 'suppliers') loadSuppliers();
+            else if (sectionId === 'orders') loadOrders();
+        }
+        
+        // SHOW ADD FORM
+        function showAddForm(type) {
+            console.log('Opening add form for:', type);
+            
+            currentFormType = type;
+            isEditing = false;
+            editingId = null;
+            
+            // Update form title based on type
+            let title = '';
+            let submitText = '';
+            
+            if (type === 'product') {
+                title = 'Add New Product';
+                submitText = 'Add Product';
+                loadProductForm();
+            } else if (type === 'supplier') {
+                title = 'Add New Supplier';
+                submitText = 'Add Supplier';
+                loadSupplierForm();
+            } else if (type === 'order') {
+                title = 'Create New Order';
+                submitText = 'Create Order';
+                loadOrderForm();
+            }
+            
+            document.getElementById('formTitle').innerHTML = `<i class="fas fa-plus-circle"></i> ${title}`;
+            document.getElementById('submitText').textContent = submitText;
+            
+            // Show the form section
+            showSection('add');
+            resetForm();
+        }
+        
+        // LOAD PRODUCT FORM
+        function loadProductForm() {
+            document.getElementById('formContainer').innerHTML = `
+                <div id="productForm">
+                    <div class="form-group">
+                        <label class="form-label">Product SKU *</label>
+                        <input type="text" id="productSku" class="form-input" placeholder="PROD-001" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Product Name *</label>
+                        <input type="text" id="productName" class="form-input" placeholder="Enter product name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select id="productCategory" class="form-input">
+                            <option value="">Select Category</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="office">Office Supplies</option>
+                            <option value="furniture">Furniture</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Price ($) *</label>
+                            <input type="number" id="productPrice" class="form-input" placeholder="0.00" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stock *</label>
+                            <input type="number" id="productStock" class="form-input" placeholder="0" required>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // LOAD SUPPLIER FORM
+        function loadSupplierForm() {
+            document.getElementById('formContainer').innerHTML = `
+                <div id="supplierForm">
+                    <div class="form-group">
+                        <label class="form-label">Supplier Name *</label>
+                        <input type="text" id="supplierName" class="form-input" placeholder="Enter supplier name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Person *</label>
+                        <input type="text" id="supplierContact" class="form-input" placeholder="Contact person name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" id="supplierEmail" class="form-input" placeholder="supplier@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" id="supplierPhone" class="form-input" placeholder="+1 (555) 123-4567">
+                    </div>
+                </div>
+            `;
+        }
+        
+        // LOAD ORDER FORM
+        function loadOrderForm() {
+            document.getElementById('formContainer').innerHTML = `
+                <div id="orderForm">
+                    <div class="form-group">
+                        <label class="form-label">Order Number *</label>
+                        <input type="text" id="orderNumber" class="form-input" placeholder="ORD-001" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Select Supplier *</label>
+                        <select id="orderSupplier" class="form-input" required>
+                            <option value="">Select a supplier</option>
+                            ${inventory.suppliers.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Order Date *</label>
+                        <input type="date" id="orderDate" class="form-input" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Number of Items *</label>
+                            <input type="number" id="orderItems" class="form-input" placeholder="1" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Total Amount ($) *</label>
+                            <input type="number" id="orderTotal" class="form-input" placeholder="0.00" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select id="orderStatus" class="form-input">
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            
+            // Set today's date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('orderDate').value = today;
+        }
+        
+        // CANCEL FORM
+        function cancelForm() {
+            showSection('products');
+            resetForm();
+        }
+        
+        // RESET FORM
+        function resetForm() {
+            const formContainer = document.getElementById('formContainer');
+            if (formContainer) {
+                const inputs = formContainer.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    if (input.type !== 'date') {
+                        input.value = '';
+                    }
+                });
+            }
+            isEditing = false;
+            editingId = null;
+        }
+        
+        // SHOW ALERT
+        function showAlert(message, type = 'success') {
+            const container = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = `
+                <div>
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+                <button onclick="this.parentElement.remove()" style="background:none; border:none; color:white; cursor:pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 4000);
+        }
+        
+        // REFRESH ALL
+        function refreshAll() {
+            loadProducts();
+            loadSuppliers();
+            loadOrders();
+            showAlert('All data refreshed successfully!');
+        }
+        
+        // ========== SAVE ITEM (ADD/UPDATE) ==========
+        function saveItem() {
+            console.log('Saving item, type:', currentFormType, 'editing:', isEditing);
+            
+            if (currentFormType === 'product') {
+                // Validate product form
+                const sku = document.getElementById('productSku')?.value.trim();
+                const name = document.getElementById('productName')?.value.trim();
+                const price = document.getElementById('productPrice')?.value;
+                const stock = document.getElementById('productStock')?.value;
+                const category = document.getElementById('productCategory')?.value;
+                
+                if (!sku || !name || !price || !stock) {
+                    showAlert('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                const productData = {
+                    id: isEditing ? editingId : Date.now(),
+                    sku: sku,
+                    name: name,
+                    category: category || 'other',
+                    price: parseFloat(price),
+                    stock: parseInt(stock),
+                    status: stock > 20 ? 'in-stock' : stock > 5 ? 'low-stock' : 'out-of-stock'
+                };
+                
+                console.log('Product data:', productData);
+                
+                if (isEditing) {
+                    // Update existing product
+                    const index = inventory.products.findIndex(p => p.id === editingId);
+                    if (index !== -1) {
+                        inventory.products[index] = productData;
+                        showAlert('✅ Product updated successfully!');
+                    }
+                } else {
+                    // Add new product
+                    inventory.products.push(productData);
+                    console.log('New product added, total:', inventory.products.length);
+                    showAlert('✅ Product added successfully!');
+                }
+                
+                loadProducts();
+                showSection('products');
+                
+            } else if (currentFormType === 'supplier') {
+                // Validate supplier form
+                const name = document.getElementById('supplierName')?.value.trim();
+                const contact = document.getElementById('supplierContact')?.value.trim();
+                const email = document.getElementById('supplierEmail')?.value.trim();
+                
+                if (!name || !contact || !email) {
+                    showAlert('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                const supplierData = {
+                    id: isEditing ? editingId : Date.now(),
+                    name: name,
+                    contact: contact,
+                    email: email,
+                    phone: document.getElementById('supplierPhone')?.value.trim() || '',
+                    products: isEditing ? inventory.suppliers.find(s => s.id === editingId)?.products || 0 : 0,
+                    status: 'active'
+                };
+                
+                console.log('Supplier data:', supplierData);
+                
+                if (isEditing) {
+                    const index = inventory.suppliers.findIndex(s => s.id === editingId);
+                    if (index !== -1) {
+                        inventory.suppliers[index] = supplierData;
+                        showAlert('✅ Supplier updated successfully!');
+                    }
+                } else {
+                    inventory.suppliers.push(supplierData);
+                    console.log('New supplier added, total:', inventory.suppliers.length);
+                    showAlert('✅ Supplier added successfully!');
+                }
+                
+                loadSuppliers();
+                showSection('suppliers');
+                
+            } else if (currentFormType === 'order') {
+                // Validate order form
+                const number = document.getElementById('orderNumber')?.value.trim();
+                const supplierId = document.getElementById('orderSupplier')?.value;
+                const date = document.getElementById('orderDate')?.value;
+                const items = document.getElementById('orderItems')?.value;
+                const total = document.getElementById('orderTotal')?.value;
+                
+                if (!number || !supplierId || !date || !items || !total) {
+                    showAlert('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                const orderData = {
+                    id: isEditing ? editingId : Date.now(),
+                    number: number,
+                    supplierId: parseInt(supplierId),
+                    date: date,
+                    items: parseInt(items),
+                    total: parseFloat(total),
+                    status: document.getElementById('orderStatus')?.value || 'pending'
+                };
+                
+                console.log('Order data:', orderData);
+                
+                if (isEditing) {
+                    const index = inventory.orders.findIndex(o => o.id === editingId);
+                    if (index !== -1) {
+                        inventory.orders[index] = orderData;
+                        showAlert('✅ Order updated successfully!');
+                    }
+                } else {
+                    inventory.orders.push(orderData);
+                    console.log('New order added, total:', inventory.orders.length);
+                    showAlert('✅ Order created successfully!');
+                }
+                
+                loadOrders();
+                showSection('orders');
+            }
+            
+            // Reset form state
+            resetForm();
+        }
+        
+        // ========== DATA LOADING & RENDERING ==========
+        
+        function loadProducts() {
+            console.log('Loading products, count:', inventory.products.length);
+            const tbody = document.getElementById('productsTable');
+            const emptyDiv = document.getElementById('productsEmpty');
+            
+            if (inventory.products.length === 0) {
+                tbody.innerHTML = '';
+                emptyDiv.style.display = 'block';
+                return;
+            }
+            
+            emptyDiv.style.display = 'none';
+            
+            tbody.innerHTML = inventory.products.map(product => {
+                let statusBadge = '';
+                if (product.status === 'in-stock') {
+                    statusBadge = '<span class="status-badge badge-success"><i class="fas fa-check"></i> In Stock</span>';
+                } else if (product.status === 'low-stock') {
+                    statusBadge = '<span class="status-badge badge-warning"><i class="fas fa-exclamation"></i> Low Stock</span>';
+                } else {
+                    statusBadge = '<span class="status-badge badge-danger"><i class="fas fa-times"></i> Out of Stock</span>';
+                }
+                
+                return `
+                    <tr>
+                        <td><strong>${product.sku}</strong></td>
+                        <td>${product.name}</td>
+                        <td>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</td>
+                        <td>$${product.price.toFixed(2)}</td>
+                        <td>${product.stock}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="action-btn btn-warning" onclick="editItem('product', ${product.id})" style="padding: 8px 15px; font-size: 13px;">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="action-btn btn-danger" onclick="deleteItem('product', ${product.id})" style="padding: 8px 15px; font-size: 13px;">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function loadSuppliers() {
+            const tbody = document.getElementById('suppliersTable');
+            const emptyDiv = document.getElementById('suppliersEmpty');
+            
+            if (inventory.suppliers.length === 0) {
+                tbody.innerHTML = '';
+                emptyDiv.style.display = 'block';
+                return;
+            }
+            
+            emptyDiv.style.display = 'none';
+            
+            tbody.innerHTML = inventory.suppliers.map(supplier => {
+                const statusBadge = supplier.status === 'active' 
+                    ? '<span class="status-badge badge-success"><i class="fas fa-check"></i> Active</span>'
+                    : '<span class="status-badge badge-danger"><i class="fas fa-times"></i> Inactive</span>';
+                
+                return `
+                    <tr>
+                        <td><strong>${supplier.name}</strong></td>
+                        <td>${supplier.contact}</td>
+                        <td>${supplier.email}</td>
+                        <td>${supplier.products}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="action-btn btn-warning" onclick="editItem('supplier', ${supplier.id})" style="padding: 8px 15px; font-size: 13px;">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="action-btn btn-danger" onclick="deleteItem('supplier', ${supplier.id})" style="padding: 8px 15px; font-size: 13px;">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function loadOrders() {
+            const tbody = document.getElementById('ordersTable');
+            const emptyDiv = document.getElementById('ordersEmpty');
+            
+            if (inventory.orders.length === 0) {
+                tbody.innerHTML = '';
+                emptyDiv.style.display = 'block';
+                return;
+            }
+            
+            emptyDiv.style.display = 'none';
+            
+            tbody.innerHTML = inventory.orders.map(order => {
+                const supplier = inventory.suppliers.find(s => s.id === order.supplierId);
+                let statusBadge = '';
+                
+                if (order.status === 'completed') {
+                    statusBadge = '<span class="status-badge badge-success"><i class="fas fa-check"></i> Completed</span>';
+                } else if (order.status === 'processing') {
+                    statusBadge = '<span class="status-badge badge-warning"><i class="fas fa-spinner"></i> Processing</span>';
+                } else if (order.status === 'pending') {
+                    statusBadge = '<span class="status-badge badge-info"><i class="fas fa-clock"></i> Pending</span>';
+                } else {
+                    statusBadge = '<span class="status-badge badge-danger"><i class="fas fa-times"></i> Cancelled</span>';
+                }
+                
+                return `
+                    <tr>
+                        <td><strong>${order.number}</strong></td>
+                        <td>${supplier ? supplier.name : 'Unknown'}</td>
+                        <td>${order.date}</td>
+                        <td>${order.items}</td>
+                        <td>$${order.total.toFixed(2)}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="action-btn btn-warning" onclick="editItem('order', ${order.id})" style="padding: 8px 15px; font-size: 13px;">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="action-btn btn-danger" onclick="deleteItem('order', ${order.id})" style="padding: 8px 15px; font-size: 13px;">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // ========== EDIT FUNCTION ==========
+        function editItem(type, id) {
+            console.log('Editing:', type, id);
+            
+            currentFormType = type;
+            isEditing = true;
+            editingId = id;
+            
+            let item;
+            
+            if (type === 'product') {
+                item = inventory.products.find(p => p.id === id);
+                loadProductForm();
+                
+                if (item) {
+                    document.getElementById('productSku').value = item.sku;
+                    document.getElementById('productName').value = item.name;
+                    document.getElementById('productCategory').value = item.category;
+                    document.getElementById('productPrice').value = item.price;
+                    document.getElementById('productStock').value = item.stock;
+                    
+                    document.getElementById('formTitle').innerHTML = `<i class="fas fa-edit"></i> Edit Product`;
+                    document.getElementById('submitText').textContent = 'Update Product';
+                    showSection('add');
+                    showAlert(`Editing product: ${item.name}`);
+                }
+                
+            } else if (type === 'supplier') {
+                item = inventory.suppliers.find(s => s.id === id);
+                loadSupplierForm();
+                
+                if (item) {
+                    document.getElementById('supplierName').value = item.name;
+                    document.getElementById('supplierContact').value = item.contact;
+                    document.getElementById('supplierEmail').value = item.email;
+                    document.getElementById('supplierPhone').value = item.phone;
+                    
+                    document.getElementById('formTitle').innerHTML = `<i class="fas fa-edit"></i> Edit Supplier`;
+                    document.getElementById('submitText').textContent = 'Update Supplier';
+                    showSection('add');
+                    showAlert(`Editing supplier: ${item.name}`);
+                }
+                
+            } else if (type === 'order') {
+                item = inventory.orders.find(o => o.id === id);
+                loadOrderForm();
+                
+                if (item) {
+                    document.getElementById('orderNumber').value = item.number;
+                    document.getElementById('orderSupplier').value = item.supplierId;
+                    document.getElementById('orderDate').value = item.date;
+                    document.getElementById('orderItems').value = item.items;
+                    document.getElementById('orderTotal').value = item.total;
+                    document.getElementById('orderStatus').value = item.status;
+                    
+                    document.getElementById('formTitle').innerHTML = `<i class="fas fa-edit"></i> Edit Order`;
+                    document.getElementById('submitText').textContent = 'Update Order';
+                    showSection('add');
+                    showAlert(`Editing order: ${item.number}`);
+                }
+            }
+        }
+        
+        // ========== DELETE FUNCTION ==========
+        function deleteItem(type, id) {
+            if (!confirm(`Are you sure you want to delete this ${type}?`)) {
+                return;
+            }
+            
+            if (type === 'product') {
+                inventory.products = inventory.products.filter(p => p.id !== id);
+                showAlert('Product deleted successfully');
+                loadProducts();
+            } else if (type === 'supplier') {
+                inventory.suppliers = inventory.suppliers.filter(s => s.id !== id);
+                showAlert('Supplier deleted successfully');
+                loadSuppliers();
+            } else if (type === 'order') {
+                inventory.orders = inventory.orders.filter(o => o.id !== id);
+                showAlert('Order deleted successfully');
+                loadOrders();
+            }
+        }
+        
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Inventory Pro System Loaded!');
+            
+            // Load initial data
+            loadProducts();
+            
+            // Show welcome message
+            setTimeout(() => {
+                showAlert('✅ All buttons are working! Try adding a product.');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
