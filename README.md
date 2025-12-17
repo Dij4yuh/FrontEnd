@@ -1,6 +1,6 @@
 # 🌐 Base URL
 # Base Url Frontend: https://front-end-phi-silk-29.vercel.app/
-# Base Url Backend: 
+# Base Url Backend: https://inventory-store-vzin.onrender.com/
 
 
 ## 📊 Products API
